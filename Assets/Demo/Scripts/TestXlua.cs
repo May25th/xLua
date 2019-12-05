@@ -35,11 +35,10 @@ using XLua;
         private void TestLoad()
         {
             //加载helloWorld.lua.txt,TextAsset会自动加txt的后缀
-            Debug.Log(Application.dataPath + "/Demo/Resources/" + "TestLua.lua");
-            TextAsset ta = Resources.Load<TextAsset>(Application.dataPath + "/Demo/Resources/" +  "async_test1.lua");
-            luaenv.DoString(ta.text);
+            //Resources Load 只能加载根目录下Resrouces文件夹内的资源 别的地方做不到 如果可以做到再改
+            TextAsset ta2 = Resources.Load<TextAsset>("TestLua.lua");
+            luaenv.DoString(ta2.text);
             luaenv.Dispose();
-
         }
     }
 }

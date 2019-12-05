@@ -16,6 +16,7 @@ using XLua;
             //虚拟机的创建
             luaenv = new LuaEnv();
             luaenv.DoString("print(\"hello world\")");
+            //Lua 调用C#，需要在C#的命名空间之前要加前缀：“CS.”。
             luaenv.DoString("CS.UnityEngine.Debug.Log('hello world 2')");
             TestLoad();
         }

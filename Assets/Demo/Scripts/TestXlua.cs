@@ -39,7 +39,6 @@ using XLua;
             //Resources Load 只能加载根目录下Resrouces文件夹内的资源 别的地方做不到 如果可以做到再改
             TextAsset ta2 = Resources.Load<TextAsset>("TestLua.lua");
             luaenv.DoString(ta2.text);
-            luaenv.Dispose();
         }
     }
 }

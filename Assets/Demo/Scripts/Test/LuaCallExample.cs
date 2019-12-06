@@ -23,14 +23,22 @@ namespace May25th.Update
                 luaO2:SayHello2('test')
                 local value = luaO2:SayHello3('test')
                 print(value)
+                -- 测试ref 的使用
                 local ref_value = 'test'
                 local outputValue = luaO2:SayHelloWithRefParam(ref_value)
                 print('ref_value',  ref_value)
                 print('outputValue', outputValue)
-
+                -- 测试参数传递
                 local test_int = 1;
                 local test_back_int, test_int = luaO2:SayHelloWithRefParamAndReturnInt(test_int)
                 print(test_int, test_back_int)
+                -- 测试事件委托
+                luaO2.TestDelegate('lua中测试委托')
+                luaO2.onClick = function(obj)
+                    print('hello 我是lua')
+                    print(obj)
+                end
+                luaO2.onClick('canshu lua')
                 "
             );
             /**/

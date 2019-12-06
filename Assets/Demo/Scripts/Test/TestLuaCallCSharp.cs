@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using XLua;
 
  namespace May25th.Update
@@ -45,5 +46,13 @@ using XLua;
             s = "Hello，我是C#";
             Debug.Log("Hello Aladdin_XLua, I am model function whih out param:" + s);
         }
+
+        public SelfVoidDelegate onClick;
+        public delegate void SelfVoidDelegate(string go);
+        void OnClick() { Debug.Log("测试"); }
+        public Action<string> TestDelegate = (param) =>
+        {
+            Debug.Log("TestDelegate in c#:" + param);
+        };
     }
 }

@@ -7,8 +7,8 @@ public interface GenConfig {
     List<Type> LuaCallCSharp { get; }
 
     //C#静态调用Lua的配置（包括事件的原型），仅可以配delegate，interface
-    List<Type> CSharpCallLua { get; }
+    //List<Type> CSharpCallLua { get; }
 
     //黑名单
-    List<string> BlackList { get; }
+    //List<string> BlackList { get; }
 }

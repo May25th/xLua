@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using XLua;
 
 public class MessagePanel : MonoBehaviour
@@ -25,19 +26,21 @@ public class MessagePanel : MonoBehaviour
         Debug.Log("22222");
         alertPanel.Find("Title").GetComponent<Text>().text = title;
         alertPanel.Find("Content").GetComponent<Text>().text = message;
-        alertPanel.gameObject.SetActive(true);
-        Debug.Log("33333");
-        if (onFinished != null)
+
+        var button = alertPanel.Find("BtnBuy").GetComponent<Button>();
+        UnityAction onclick = () =>
         {
-            var buyBtn = alertPanel.Find("BtnBuy").gameObject;
-            buyBtn.SetActive(true);
-            var button = buyBtn.GetComponent<Button>();
-            button.onClick.AddListener(()=>
+            if (onFinished != null)
             {
                 onFinished();
-                alertPanel.gameObject.SetActive(false);
-            });
-        }
+            }
+            button.onClick.RemoveAllListeners();
+            alertPanel.gameObject.SetActive(false);
+        };
+        //防止消息框未关闭时多次被调用
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(onclick);
+        alertPanel.gameObject.SetActive(true);
     }
 
     public static void ShowConfirmPanel(string message, string title, Action<bool> onFinished = null)
@@ -62,18 +65,49 @@ public class MessagePanel : MonoBehaviour
             var confirmBtn = confirmPanel.Find("BtnBuy").GetComponent<Button>();
             var cancelBtn = confirmPanel.Find("CancelBuy").GetComponent<Button>();
  
-            confirmBtn.onClick.AddListener(()=>
+            Action cleanup = () =>
             {
-                onFinished(true);
+                confirmBtn.onClick.RemoveAllListeners();
+                cancelBtn.onClick.RemoveAllListeners();
                 confirmPanel.gameObject.SetActive(false);
-            });
- 
-            cancelBtn.onClick.AddListener(() =>
+            };
+
+            UnityAction onconfirm = () =>
             {
-                onFinished(false);
-                confirmPanel.gameObject.SetActive(false);
-            });
+                if (onFinished != null)
+                {
+                    onFinished(true);
+                }
+                cleanup();
+            };
+
+            UnityAction oncancel = () =>
+            {
+                if (onFinished != null)
+                {
+                    onFinished(false);
+                }
+                cleanup();
+            };
+
+            //防止消息框未关闭时多次被调用
+            confirmBtn.onClick.RemoveAllListeners();
+            confirmBtn.onClick.AddListener(onconfirm);
+            cancelBtn.onClick.RemoveAllListeners();
+            cancelBtn.onClick.AddListener(oncancel);
+            confirmPanel.gameObject.SetActive(true);
         }
 
+    }
+
+    public static class MessagePanelConfig
+    {
+        [CSharpCallLua]
+        public static List<Type> CSharpCallLua = new List<Type>()
+        {
+            typeof(Action),
+            typeof(Action<bool>),
+            typeof(UnityAction),
+        };
     }
 }

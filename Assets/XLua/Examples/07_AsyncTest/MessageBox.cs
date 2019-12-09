@@ -98,7 +98,7 @@ namespace XLuaTest
         }
     }
 
-    /*
+    
     public static class MessageBoxConfig
     {
         [CSharpCallLua]
@@ -109,5 +109,5 @@ namespace XLuaTest
         typeof(UnityAction),
     };
     }
-    */
+    /**/
 }
